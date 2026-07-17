@@ -1,137 +1,16 @@
-# pbd2026_1sem <br>
-## [./00_guia_rapido](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./00_guia_rapido) <br>
-[dicas.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/dicas.md) <br>
-[introducao-er.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/introducao-er.pdf) <br>
-[psql.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/psql.pdf) <br>
+# pbd2026_2sem <br>
+## [./00_guia_rapido](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./00_guia_rapido) <br>
+[dicas.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/dicas.md) <br>
+[introducao-er.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/introducao-er.pdf) <br>
+[psql.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/psql.pdf) <br>
 * [Video de uma aula de correção de exercício da turma 2024/1](https://youtu.be/4QV7aiZMETE)
 
 [Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/00_guia_rapido)
 &nbsp;
-[setup.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/setup.md) <br>
-[sql1.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/sql1.pdf) <br>
-[sql2.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/sql2.pdf) <br>
-[stored_procedure.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/stored_procedure.pdf) <br>
-[transformacao-er-modelo-relacional.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/transformacao-er-modelo-relacional.pdf) <br>
-[trigger.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/trigger.pdf) <br>
-[videos.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./00_guia_rapido/videos.md) <br>
-## [./01_introducao](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./01_introducao) <br>
-[etapas.png](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./01_introducao/etapas.png) <br>
-[lista.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./01_introducao/lista.md) <br>
-[manutencao.dia](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./01_introducao/manutencao.dia) <br>
-[manutencao.png](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./01_introducao/manutencao.png) <br>
-[manutencao.sql](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./01_introducao/manutencao.sql) <br>
-[mapamental.png](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./01_introducao/mapamental.png) <br>
-
-* [Stored Procedure](https://www.youtube.com/watch?v=Llrp3upyYgE&list=PLvT8P1q6jMWepzWUfhnG8SbA8xk8EmSXP)
-
-
-### Propostas
-
-1. Controle Financeiro Pessoal
-
-* Descrição: Uma aplicação web ou desktop para gerenciar receitas, despesas, metas de economia e relatórios mensais.
-
-2. Sistema de Biblioteca Pessoal
-
-* Descrição: Gerencie livros que você leu, quer ler, emprestou, autores, categorias, etc.
-
-3. Sistema de Controle de Hábitos / Tarefas
-
-* Descrição: Aplicação para acompanhar hábitos diários, metas, produtividade, checklists.
-
-4. Sistema de Registro de Cursos e Aprendizado
-
-* Descrição: Controle cursos online feitos, status, notas, certificados, e progresso.
-
-5. Agenda de Contatos + Anotações (tipo CRM Pessoal)
-
-* Descrição: Sistema para guardar informações úteis sobre contatos (amigos, trabalho, etc.), interações e lembretes.
-
-6. Sistema de Gestão de Projetos Pessoais (tipo Trello simplificado)
-
-* Descrição: Cadastre projetos, tarefas, status, prazos, colaboradores.
-
-7. Gestão de Coleções (Filmes, Jogos, Vinis, etc.)
-
-* Descrição: Cadastre sua coleção de forma organizada por tipo, gênero, ano, etc.
-
-
-[Baixar Material da Aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/01_introducao)
-[stored_procedure.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./01_introducao/stored_procedure.pdf) <br>
-## [./02_formatura](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./02_formatura) <br>
-<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/02_formatura) <br><br>
-&nbsp;
-## [./03_exercicios](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./03_exercicios) <br>
-[lista.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./03_exercicios/lista.md) <br>
-[manutencao.sql](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./03_exercicios/manutencao.sql) <br>
-* [Psycopg + Flask](https://www.youtube.com/playlist?list=PLvT8P1q6jMWdfi2Od79tZ2zLdS5DTiwVU)
-
-* [Python + Flask](https://www.youtube.com/playlist?list=PLvT8P1q6jMWeVihLzRF3Do1gfGKL8xOtZ)
-
-<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/03_exercicios) <br><br>
-&nbsp;
-[manutencao](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./03_exercicios/manutencao) <br>
-## [./04_exercicios_stored_procedure_com_integracao_flask_python](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./04_exercicios_stored_procedure_com_integracao_flask_python) <br>
-<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/04_exercicios_stored_procedure_com_integracao_flask_python) <br><br>
-&nbsp;
-[trabalho1.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./04_exercicios_stored_procedure_com_integracao_flask_python/trabalho1.md) <br>
-## [./05_continuacao_lista_projeto_flask](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./05_continuacao_lista_projeto_flask) <br>
-[lista.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./05_continuacao_lista_projeto_flask/lista.md) <br>
-[manutencao.dia](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./05_continuacao_lista_projeto_flask/manutencao.dia) <br>
-[manutencao.png](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./05_continuacao_lista_projeto_flask/manutencao.png) <br>
-[manutencao.sql](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./05_continuacao_lista_projeto_flask/manutencao.sql) <br>
-Continuação
-[stored_procedure_functions.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./05_continuacao_lista_projeto_flask/stored_procedure_functions.md) <br>
-[manutencao](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./05_continuacao_lista_projeto_flask/manutencao) <br>
-## [./06_continuacao_lista_projeto_flask](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./06_continuacao_lista_projeto_flask) <br>
-[lista.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./06_continuacao_lista_projeto_flask/lista.md) <br>
-[manutencao.dia](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./06_continuacao_lista_projeto_flask/manutencao.dia) <br>
-[manutencao.png](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./06_continuacao_lista_projeto_flask/manutencao.png) <br>
-[manutencao.sql](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./06_continuacao_lista_projeto_flask/manutencao.sql) <br>
-Continuação
-[stored_procedure_functions.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./06_continuacao_lista_projeto_flask/stored_procedure_functions.md) <br>
-[manutencao](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./06_continuacao_lista_projeto_flask/manutencao) <br>
-## [./07_continuacao_lista1_exercicio22](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./07_continuacao_lista1_exercicio22) <br>
-[lista.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./07_continuacao_lista1_exercicio22/lista.md) <br>
-[manutencao.dia](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./07_continuacao_lista1_exercicio22/manutencao.dia) <br>
-[manutencao.png](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./07_continuacao_lista1_exercicio22/manutencao.png) <br>
-[manutencao.sql](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./07_continuacao_lista1_exercicio22/manutencao.sql) <br>
-Continuação
-[stored_procedure_functions.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./07_continuacao_lista1_exercicio22/stored_procedure_functions.md) <br>
-[manutencao](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./07_continuacao_lista1_exercicio22/manutencao) <br>
-## [./08_atendimento_trabalho_revisao](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./08_atendimento_trabalho_revisao) <br>
-<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/08_atendimento_trabalho_revisao) <br><br>
-&nbsp;
-## [./09_atividade_avaliada1](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./09_atividade_avaliada1) <br>
-[Resolução - Atividade Avaliada 1 bim - 2026/1](https://youtu.be/Llrp3upyYgE)
-
-
-
-<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/09_atividade_avaliada1) <br><br>
-&nbsp;
-## [./10_resolucao_atividade_avaliada1](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./10_resolucao_atividade_avaliada1) <br>
-[atividade1_070526.sql](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./10_resolucao_atividade_avaliada1/atividade1_070526.sql) <br>
-[pbd2026_1sem_1atividade.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./10_resolucao_atividade_avaliada1/pbd2026_1sem_1atividade.pdf) <br>
-
-[Video Aula de Resolução da Atividade 1](https://www.youtube.com/watch?v=Llrp3upyYgE)
-
-<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/10_resolucao_atividade_avaliada1) <br><br>
-&nbsp;
-## [./11_trigger](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./11_trigger) <br>
-[exemplo_trigger.sql](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./11_trigger/exemplo_trigger.sql) <br>
-[lista_trigger.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./11_trigger/lista_trigger.md) <br>
-[manutencao.sql](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./11_trigger/manutencao.sql) <br>
-
-<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/11_trigger) <br><br>
-&nbsp;
-[trigger.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./11_trigger/trigger.pdf) <br>
-[triggers_printscreen.pdf](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./11_trigger/triggers_printscreen.pdf) <br>
-[manutencao](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./11_trigger/manutencao) <br>
-## [./12_trigger](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./12_trigger) <br>
-[lista_trigger.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./12_trigger/lista_trigger.md) <br>
-<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/12_trigger) <br><br>
-&nbsp;
-[trabalho2.md](https://github.com/IgorAvilaPereira/pbd2026_1sem/blob/main/./12_trigger/trabalho2.md) <br>
-## [./13_atividade_avaliada2](https://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/./13_atividade_avaliada2) <br>
-<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/13_atividade_avaliada2) <br><br>
-&nbsp;
+[setup.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/setup.md) <br>
+[sql1.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/sql1.pdf) <br>
+[sql2.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/sql2.pdf) <br>
+[stored_procedure.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/stored_procedure.pdf) <br>
+[transformacao-er-modelo-relacional.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/transformacao-er-modelo-relacional.pdf) <br>
+[trigger.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/trigger.pdf) <br>
+[videos.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/videos.md) <br>
