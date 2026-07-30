@@ -1,6 +1,7 @@
 # pbd2026_2sem <br>
 ## [./00_guia_rapido](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./00_guia_rapido) <br>
 [dicas.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/dicas.md) <br>
+[ifbet.sql](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/ifbet.sql) <br>
 [introducao-er.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/introducao-er.pdf) <br>
 [psql.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/psql.pdf) <br>
 **Videos:**
