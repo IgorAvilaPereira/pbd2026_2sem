@@ -1,12 +1,20 @@
 **Videos:**
 
-* [Aula de correção de exercício da turma 2024/1](https://youtu.be/4QV7aiZMETE)
+* [Playlist - Stored Procedure](https://www.youtube.com/playlist?list=PLvT8P1q6jMWepzWUfhnG8SbA8xk8EmSXP)
 
+* [Playlist - Trigger](https://www.youtube.com/playlist?list=PLvT8P1q6jMWcZx6yAy3m_U-VQClhMwE_L)
+
+* [Playlist - Python/Flask](https://www.youtube.com/playlist?list=PLvT8P1q6jMWeVihLzRF3Do1gfGKL8xOtZ)
+
+* [Aula de Correção - Lista de Exercícios - Turma 2024/1](https://youtu.be/4QV7aiZMETE)
+
+<!--
 * [Python Flask 1](https://www.youtube.com/playlist?list=PLvT8P1q6jMWdfi2Od79tZ2zLdS5DTiwVU)
 
 * [Python Flask 2](https://www.youtube.com/playlist?list=PLvT8P1q6jMWeVihLzRF3Do1gfGKL8xOtZ)
+-->
 
-* [Resolução - Atividade Avaliada 1 bim - 2026/1](https://youtu.be/Llrp3upyYgE)
+* [Resolução - Atividade Avaliada 1 bim - Turma 2026/1](https://youtu.be/Llrp3upyYgE)
 
 [Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/00_guia_rapido)
 &nbsp;
