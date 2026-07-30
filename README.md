@@ -30,3 +30,6 @@
 [transformacao-er-modelo-relacional.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/transformacao-er-modelo-relacional.pdf) <br>
 [trigger.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/trigger.pdf) <br>
 [videos.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./00_guia_rapido/videos.md) <br>
+## [./01_introducao](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./01_introducao) <br>
+<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/01_introducao) <br><br>
+&nbsp;
