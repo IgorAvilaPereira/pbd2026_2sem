@@ -38,3 +38,6 @@
 [lista1.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./02_lista1/lista1.md) <br>
 <br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/02_lista1) <br><br>
 &nbsp;
+## [./03_continuacao_lista1](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./03_continuacao_lista1) <br>
+<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/03_continuacao_lista1) <br><br>
+&nbsp;
