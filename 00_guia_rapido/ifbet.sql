@@ -262,4 +262,143 @@ $$ LANGUAGE 'plpgsql';
 
 -- select * from apostas_usuario(1);
 
+-- 14
+CREATE OR REPLACE FUNCTION liste_jogos() RETURNS TABLE (var_data_hora timestamp,            var_equipe_casa text, var_equipe_visitante text) AS
+$$
+BEGIN
+    RETURN QUERY SELECT data_hora, (SELECT nome FROM equipe WHERE id = equipe_casa_id) as equipe_casa, (SELECT nome FROM equipe where id = equipe_visitante_id) as equipe_visitante FROM jogo JOIN equipe ON jogo.equipe_casa_id = equipe.id;
 
+END;
+$$ LANGUAGE 'plpgsql';
+
+
+-- 15
+CREATE OR REPLACE FUNCTION lucro_potencial(aposta_id integer) RETURNS TABLE (var_valor money, var_odd real, var_lucro money) AS
+$$
+BEGIN
+    RETURN QUERY select valor, odd, valor+(valor*odd) as lucro from aposta;
+END;
+$$ LANGUAGE 'plpgsql';
+
+-- 16
+DROP FUNCTION tempo_desde_jogo;
+CREATE OR REPLACE FUNCTION tempo_desde_jogo(integer) RETURNS INTERVAL AS
+$$
+DECLARE
+    var_tempo_decorrido INTERVAL := NULL;
+BEGIN
+    IF (EXISTS(SELECT * FROM jogo WHERE id = $1)) THEN
+        SELECT AGE(CURRENT_TIMESTAMP, data_hora) AS tempo_decorrido FROM jogo WHERE id = $1 INTO var_tempo_decorrido;
+    END IF;        
+    RETURN var_tempo_decorrido;
+END;
+$$ LANGUAGE 'plpgsql';
+
+
+-- 17
+CREATE OR REPLACE FUNCTION saldo_total_sistema() RETURNS TABLE(var_saldo money) AS
+$$
+BEGIN
+    RETURN QUERY SELECT COALESCE(SUM(saldo), 0::MONEY) FROM usuario;
+END;
+$$ LANGUAGE 'plpgsql';
+
+--  id serial primary key,
+--    usuario_id integer references usuario (id),
+--    valor money,
+--    jogo_id integer references jogo (id),
+--    gols_da_casa integer,
+--    gols_do_visitante integer,
+--    odd real check (odd >= 0 and odd <= 1) 
+--);
+
+-- 18
+--DROP FUNCTION apostas_acima;
+CREATE OR REPLACE FUNCTION apostas_acima(param_valor numeric) RETURNS TABLE(var_valor money, var_gols_da_casa integer, var_gols_do_visitante integer, var_odd real) AS
+$$
+BEGIN
+    RETURN QUERY SELECT valor, gols_da_casa, gols_do_visitante, odd FROM aposta WHERE valor::numeric > param_valor;
+END;
+$$ LANGUAGE 'plpgsql';
+
+-- 19
+CREATE OR REPLACE FUNCTION usuarios_sem_apostas() RETURNS TABLE(var_id integer, var_nome varchar, var_email varchar) AS
+$$
+BEGIN
+    RETURN QUERY select id, nome, email from usuario where id not in (select usuario_id from aposta);
+END;
+$$ LANGUAGE 'plpgsql'; 
+
+-- 20
+DROP FUNCTION ranking_apostadores;
+CREATE OR REPLACE FUNCTION ranking_apostadores() RETURNS TABLE(var_id integer, var_nome varchar, var_qtde bigint) AS
+$$
+BEGIN
+    RETURN QUERY select usuario.id, usuario.nome, coalesce(count(aposta.id), 0) as qtde FROM usuario LEFT JOIN aposta ON usuario.id = aposta.usuario_id GROUP by usuario.id, usuario.nome, aposta.id ORDER BY usuario.id;
+END;
+$$ LANGUAGE 'plpgsql'; 
+
+-- 21
+CREATE OR REPLACE PROCEDURE depositar(var_usuario_id integer, var_valor money) AS 
+$$
+BEGIN
+    UPDATE usuario SET saldo = saldo + var_valor WHERE id = var_usuario_id;
+END;
+$$ LANGUAGE 'plpgsql';  
+
+
+-- 22
+--Crie uma procedure sacar(usuario_id, valor).
+--
+--Regras:
+--
+--verificar saldo;
+--impedir saldo negativo.
+CREATE OR REPLACE PROCEDURE sacar(var_usuario_id integer, var_valor money) AS 
+$$
+DECLARE
+    var_saldo_atual money;
+BEGIN
+    UPDATE usuario SET saldo = CASE 
+        WHEN (saldo - var_valor >= 0::money) THEN saldo - var_valor 
+        ELSE saldo END 
+    WHERE id = var_usuario_id;
+    
+    SELECT saldo FROM usuario WHERE id = var_usuario_id INTO var_saldo_atual;
+    
+    RAISE NOTICE 'Saldo Atual: %', var_saldo_atual;   
+    
+END;
+$$ LANGUAGE 'plpgsql';  
+
+-- 23
+CREATE OR REPLACE PROCEDURE transferir(var_usuario_id_origem integer, var_usuario_id_destino integer, var_valor money) AS 
+$$
+DECLARE
+    var_saldo_origem money;
+BEGIN
+    -- existe os 2 usuarios
+    IF (EXISTS(SELECT * FROM usuario WHERE id = var_usuario_id_origem) AND EXISTS(SELECT * FROM usuario WHERE id = var_usuario_id_destino)) THEN
+    
+       -- tem saldo suficiente     
+       SELECT COALESCE(saldo, 0::MONEY) FROM usuario WHERE id = var_usuario_id_origem INTO var_saldo_origem;
+       IF ((var_saldo_origem - var_valor) >= 0::money) THEN                    
+       
+            CALL sacar(var_usuario_id_origem, var_valor);
+            CALL depositar(var_usuario_id_destino, var_valor);
+            
+       END IF;    
+    END IF;   
+END;
+$$ LANGUAGE 'plpgsql';  
+
+-- 24
+CREATE OR REPLACE FUNCTION cadastrar_equipe(var_nome text, var_local text) RETURNS integer AS 
+$$
+DECLARE
+    var_id integer := 0;
+BEGIN   
+    INSERT INTO equipe (nome, local) VALUES(var_nome, var_local) RETURNING id INTO var_id;
+    RETURN var_id;
+END;
+$$ LANGUAGE 'plpgsql';  
