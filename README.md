@@ -41,3 +41,6 @@
 ## [./03_continuacao_lista1](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./03_continuacao_lista1) <br>
 <br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/03_continuacao_lista1) <br><br>
 &nbsp;
+## [./04_formatura](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./04_formatura) <br>
+<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/04_formatura) <br><br>
+&nbsp;
