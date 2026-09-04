@@ -49,3 +49,6 @@
 <br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/05_exercicios_stored_procedure_com_integracao_flask_python) <br><br>
 &nbsp;
 [myproject](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./05_exercicios_stored_procedure_com_integracao_flask_python/myproject) <br>
+## [./06_flask_lista1](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./06_flask_lista1) <br>
+<br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/06_flask_lista1) <br><br>
+&nbsp;
