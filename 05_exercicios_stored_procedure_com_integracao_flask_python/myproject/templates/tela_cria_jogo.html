@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Jogo</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #333;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 480px;
+            padding: 35px;
+
+            background: #fff;
+            border-radius: 18px;
+
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            text-align: center;
+            color: #1e3c72;
+            font-size: 28px;
+        }
+
+        .subtitulo {
+            margin: 0 0 30px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .campo {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+
+            font-size: 14px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        select,
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 13px 14px;
+
+            border: 1px solid #d5d9e0;
+            border-radius: 10px;
+
+            background: #f8f9fb;
+            color: #333;
+
+            font-size: 15px;
+
+            outline: none;
+            transition: 0.2s;
+        }
+
+        select:focus,
+        input[type="datetime-local"]:focus {
+            border-color: #2a5298;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.12);
+        }
+
+        .confronto {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .confronto .campo {
+            flex: 1;
+        }
+
+        .versus {
+            margin-top: 10px;
+
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            margin-top: 8px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(30, 60, 114, 0.3);
+        }
+
+        input[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 500px) {
+            .card {
+                margin: 20px;
+                padding: 25px;
+            }
+
+            .confronto {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .versus {
+                margin: -10px 0 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h1>⚽ Criar Jogo</h1>
+        <p class="subtitulo">Cadastre um novo confronto</p>
+
+        <form action="/cria_jogo" method="post">
+
+            <div class="confronto">
+
+                <div class="campo">
+                    <label for="casa_id">🏠 Casa</label>
+
+                    <select name="casa_id" id="casa_id">
+                        {% for equipe in vetEquipeCasa %}
+                            <option value="{{ equipe[0] }}">
+                                {{ equipe[1] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="versus">VS</div>
+
+                <div class="campo">
+                    <label for="visitante_id">✈️ Visitante</label>
+
+                    <select name="visitante_id" id="visitante_id">
+                        {% for equipe in vetEquipeVisitante %}
+                            <option value="{{ equipe[0] }}">
+                                {{ equipe[1] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="campo">
+                <label for="data_hora">📅 Data e hora</label>
+
+                <input
+                    type="datetime-local"
+                    name="data_hora"
+                    id="data_hora"
+                    required
+                >
+            </div>
+
+            <input type="submit" value="Criar Jogo">
+
+        </form>
+
+    </div>
+
+</body>
+</html>

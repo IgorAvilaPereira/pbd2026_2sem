@@ -402,3 +402,125 @@ BEGIN
     RETURN var_id;
 END;
 $$ LANGUAGE 'plpgsql';  
+
+-- 25
+CREATE OR REPLACE FUNCTION criar_jogo(var_casa integer, var_visitante integer, var_data_hora timestamp with time zone) RETURNS BOOLEAN AS
+$$
+BEGIN
+    IF (var_casa = var_visitante) THEN 
+        RETURN FALSE;
+    END IF;
+    
+    IF (EXISTS(SELECT * FROM equipe WHERE id = var_casa) AND EXISTS(SELECT * FROM equipe WHERE id = var_visitante)) THEN
+        IF (CAST(var_data_hora AS DATE) >= CURRENT_DATE) THEN
+            INSERT INTO jogo (equipe_casa_id, equipe_visitante_id, data_hora) VALUES (var_casa, var_visitante, var_data_hora);
+            RETURN TRUE;
+        ELSE
+            RETURN FALSE;
+        END IF;
+    END IF;
+    RETURN FALSE;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION realizar_aposta(var_usuario_id integer, var_jogo_id integer, var_valor money, var_gols_casa integer, var_gols_visitante integer) RETURNS BOOLEAN AS
+$$
+BEGIN
+    IF (EXISTS(SELECT * FROM jogo WHERE id = var_jogo_id) AND EXISTS(SELECT * FROM usuario WHERE id = var_usuario_id AND saldo::numeric >= var_valor::numeric)) THEN    
+        
+        INSERT INTO aposta (usuario_id, valor, jogo_id, gols_da_casa, gols_do_visitante, odd) VALUES
+    (var_usuario_id, var_valor, var_jogo_id, var_gols_casa, var_gols_visitante, CAST(RANDOM() AS NUMERIC(3,2)));
+    
+         UPDATE usuario SET saldo = cast((saldo::numeric - var_valor::numeric) as money) where id = var_usuario_id;
+        
+        RETURN TRUE;
+    END IF;
+    
+    RETURN FALSE;
+END;
+$$ LANGUAGE 'plpgsql';
+
+-- 26
+CREATE OR REPLACE PROCEDURE cancelar_aposta(var_id integer) AS
+$$
+DECLARE
+    var_valor money;
+    var_usuario integer;
+BEGIN
+    SELECT valor, usuario_id FROM aposta WHERE id = var_id INTO var_valor, var_usuario;
+    UPDATE usuario SET saldo = saldo + var_valor WHERE id = var_usuario;
+    DELETE FROM aposta WHERE id = var_id;
+END;
+$$ LANGUAGE 'plpgsql';
+
+-- 27
+-- jump
+
+-- 28
+CREATE OR REPLACE PROCEDURE bonus_todos(var_valor money) AS 
+$$
+BEGIN
+    UPDATE usuario SET saldo = saldo + var_valor;
+END;
+$$ LANGUAGE 'plpgsql';
+
+-- 29
+CREATE FUNCTION simular(var_jogo_id INTEGER, var_quantidade INTEGER) RETURNS void AS
+$$
+DECLARE
+    nome_equipe_casa text;
+    nome_equipe_visitante text; 
+    
+    param_equipe_casa_id integer := 0;
+    param_equipe_visitante_id integer := 0;
+    
+    param_odd real := CAST(RANDOM() AS NUMERIC(3,2));
+    
+    gols_casa integer := CAST(RANDOM()*10 AS NUMERIC(1,0));
+    gols_visitante integer := CAST(RANDOM()*10 AS NUMERIC(1,0));    
+    
+BEGIN
+    SELECT equipe_casa_id, equipe_visitante_id FROM jogo WHERE id = var_jogo_id INTO param_equipe_casa_id, param_equipe_visitante_id;    
+    SELECT nome FROM equipe WHERE id = param_equipe_casa_id INTO nome_equipe_casa;
+    SELECT nome FROM equipe WHERE id = param_equipe_visitante_id INTO nome_equipe_visitante;
+      
+    WHILE(var_quantidade >= 0) LOOP        
+        RAISE NOTICE '% (%) vs % (%): Aposta: %, ODD:%', nome_equipe_casa, gols_casa, nome_equipe_visitante, gols_visitante, CAST(RANDOM() AS NUMERIC(10,2)), param_odd;     
+
+        param_odd := CAST(RANDOM() AS NUMERIC(3,2));    
+        gols_casa := CAST(RANDOM()*10 AS NUMERIC(1,0));
+        gols_visitante := CAST(RANDOM()*10 AS NUMERIC(1,0));  
+        
+        var_quantidade := var_quantidade - 1;                
+    END LOOP;    
+ END;
+$$ LANGUAGE 'plpgsql';
+
+
+-- 30
+
+--Crie uma procedure 
+--
+--A procedure deverá:
+--
+--atualizar o resultado do jogo;
+--identificar apostas vencedoras;
+--calcular prêmio:
+--prêmio = valor * odd
+--creditar o saldo dos vencedores.
+
+CREATE OR REPLACE PROCEDURE encerrar_jogo(var_jogo_id integer, var_gols_casa integer, var_gols_visitante integer) AS
+$$
+DECLARE
+    reg RECORD;
+BEGIN
+-- atualizar o resultado do jogo;
+    UPDATE jogo SET gols_da_casa = var_gols_casa, gols_do_visitante = var_gols_visitante WHERE id = var_jogo_id;
+    FOR reg IN select * from aposta where jogo_id = var_jogo_id and gols_da_casa = var_gols_casa AND gols_do_visitante = var_gols_visitante LOOP
+        RAISE NOTICE 'APOSTA:% - ganhou: %', reg.id, CAST(reg.valor::numeric + reg.valor::numeric*reg.odd AS NUMERIC(10,2))::MONEY;
+        UPDATE usuario SET saldo = saldo + CAST(reg.valor::numeric + reg.valor::numeric*reg.odd AS NUMERIC(10,2))::MONEY WHERE id = reg.usuario_id;
+    END LOOP;
+END;
+$$ LANGUAGE 'plpgsql';
+
+

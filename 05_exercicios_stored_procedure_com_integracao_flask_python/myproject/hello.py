@@ -20,6 +20,23 @@ import psycopg # para trabalhar com banco
 # objeto de app
 app = Flask(__name__)
 
+# cria_jogo
+@app.route("/cria_jogo", methods = ['POST'])
+def cria_jogo():
+     with psycopg.connect(dbname="ifbet", user="postgres", password="postgres", port=5432, host="localhost") as conn:
+            with conn.cursor() as cur:
+                casa_id = int(request.form['casa_id'])
+                visitante_id = int(request.form['visitante_id'])
+                data_hora = request.form['data_hora']
+                cur.execute("SELECT criar_jogo(%s,%s,%s);", [casa_id, visitante_id, data_hora])
+                resposta = bool(cur.fetchone()[0])
+                conn.commit()   
+                if (resposta is True):
+                    return "<b> Deu bom </b>"
+                else:
+                      return "<b style='color:red'> Deu xabum! </b>"
+            # return redirect(url_for('hello_world'))
+
 # rota de adicionar
 @app.route("/adicionar", methods = ['GET', 'POST'])
 def adicionar():
@@ -56,3 +73,11 @@ def hello_world():
             # for record in cur:
             #     html = html + record[1] +"<br><br>"
             # return html
+
+@app.route("/tela_cria_jogo")
+def tela_cria_jogo():
+     with psycopg.connect(dbname="ifbet", user="postgres", password="postgres", port=5432, host="localhost") as conn:
+            with conn.cursor() as cur:
+                cur.execute("select * from equipe")
+                equipes = cur.fetchall()
+                return render_template("tela_cria_jogo.html", vetEquipeCasa = equipes , vetEquipeVisitante = equipes )
