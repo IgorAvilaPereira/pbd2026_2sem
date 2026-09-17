@@ -40,6 +40,8 @@ CREATE TABLE jogo (
 INSERT INTO jogo (equipe_casa_id, equipe_visitante_id) VALUES
 (1, 6);
 
+INSERT INTO jogo (equipe_casa_id, equipe_visitante_id) VALUES
+(6, 1);
 
 CREATE TABLE aposta (
     id serial primary key,
@@ -522,5 +524,71 @@ BEGIN
     END LOOP;
 END;
 $$ LANGUAGE 'plpgsql';
+
+DROP FUNCTION historico_apostas;
+
+CREATE OR REPLACE FUNCTION historico_apostas(var_usuario_id_aux integer) RETURNS TABLE
+(var_aposta_id integer, var_usuario_id integer, var_jogo_id integer,  var_valor money, var_times text, var_gols_da_casa integer, var_gols_do_visitante integer) AS
+$$
+BEGIN
+    RETURN QUERY select 
+    aposta.id, 
+    usuario_id, 
+    jogo.id, 
+    valor, 
+    (select nome from equipe where id = jogo.equipe_casa_id) || ' x '
+ ||  (select nome from equipe where id = jogo.equipe_visitante_id) as times, 
+    aposta.gols_da_casa,
+    aposta.gols_do_visitante from 
+        aposta JOIN jogo on aposta.jogo_id = jogo.id 
+        JOIN equipe ON equipe.id = jogo.equipe_casa_id OR equipe.id = jogo.equipe_visitante_id WHERE aposta.usuario_id = var_usuario_id_aux GROUP BY aposta.id, aposta.usuario_id, jogo.id, valor, aposta.gols_da_casa, aposta.gols_do_visitante;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION estatistica(var_equipe_id_aux integer) RETURNS TABLE (var_equipe_id integer, var_equipe_nome text, var_qtde_jogos integer, var_gols_realizados integer, var_gols_sofridos integer) AS
+$$
+DECLARE
+    eq_id integer;
+    eq_nome text;
+    
+    eq_qtde_jogos integer;
+    eq_gols_realizados1 integer;
+    eq_gols_realizados2 integer;
+    eq_gols_realizados_total integer;
+    
+    eq_gols_sofridos1 integer;
+    eq_gols_sofridos2 integer;
+    eq_gols_sofridos_total integer;
+    
+BEGIN
+    SELECT id, nome FROM equipe where id = var_equipe_id_aux INTO eq_id, eq_nome;    
+    
+    select COALESCE(count(*), 0) from jogo where jogo.equipe_casa_id = var_equipe_id_aux or jogo.equipe_visitante_id = var_equipe_id_aux INTO eq_qtde_jogos;
+    
+    -- gols realizados
+    select COALESCE(sum(gols_da_casa), 0) from jogo where equipe_casa_id = var_equipe_id_aux INTO eq_gols_realizados1;
+    
+    select COALESCE(sum(gols_do_visitante), 0) from jogo where equipe_visitante_id = var_equipe_id_aux INTO eq_gols_realizados2;
+    
+    eq_gols_realizados_total := eq_gols_realizados1 + eq_gols_realizados2;
+    
+    
+    -- gols sofridos
+    select COALESCE(sum(gols_do_visitante),0) from jogo where equipe_casa_id = var_equipe_id_aux INTO eq_gols_sofridos1;
+    
+    select COALESCE(sum(gols_da_casa),0) from jogo where equipe_visitante_id = var_equipe_id_aux INTO eq_gols_sofridos2;
+    
+    eq_gols_sofridos_total := eq_gols_sofridos1 + eq_gols_sofridos2;
+    
+     CREATE TEMPORARY TABLE IF NOT EXISTS temp_tabela (var_equipe_id integer, var_equipe_nome text, var_qtde_jogos integer, var_gols_realizados integer, var_gols_sofridos integer) ON COMMIT DROP;
+     
+     INSERT INTO temp_tabela(var_equipe_id, var_equipe_nome, var_qtde_jogos, var_gols_realizados, var_gols_sofridos) VALUES(eq_id, eq_nome, eq_qtde_jogos, eq_gols_realizados_total, eq_gols_sofridos_total);
+     
+     RETURN QUERY select * from temp_tabela;
+END 
+$$ LANGUAGE 'plpgsql';
+
+
+
 
 
