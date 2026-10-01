@@ -29,13 +29,20 @@ INSERT INTO equipe (nome, local) VALUES
 ('PELOTAS', 'BOCA DO LOBO'),
 ('RIO GRANDE', 'ARTUR LAWSON');
 
+CREATE TABLE campeonato (
+    id serial primary key,
+    nome text not null,
+    ano integer check (ano >= 1900)
+);
+
 CREATE TABLE jogo (
     id serial primary key,
     data_hora timestamp default current_timestamp,
     equipe_casa_id integer references equipe (id),
     equipe_visitante_id integer references equipe(id),
     gols_da_casa integer,
-    gols_do_visitante integer
+    gols_do_visitante integer,
+    campeonato_id integer references campeonato (id)
 );
 INSERT INTO jogo (equipe_casa_id, equipe_visitante_id) VALUES
 (1, 6);
@@ -588,7 +595,192 @@ BEGIN
 END 
 $$ LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION gerar_campeonato(var_nome text, var_ano integer) RETURNS BOOLEAN AS
+$$
+DECLARE
+    var_campeonato_id integer := 0;
+    var_visitante RECORD;
+    var_casa RECORD;
+    gols_casa integer := CAST(RANDOM()*10 AS NUMERIC(1,0))::integer;
+    gols_visitante integer := CAST(RANDOM()*10 AS NUMERIC(1,0))::integer;
+BEGIN
+    INSERT INTO campeonato (nome, ano) VALUES (var_nome, var_ano) RETURNING id INTO var_campeonato_id;
+    
+    RAISE NOTICE '%', var_campeonato_id;
+    
+    IF (var_campeonato_id > 0) THEN       
+       FOR var_casa IN select * from equipe LOOP       
+            FOR var_visitante IN SELECT * FROM equipe WHERE id != var_casa.id LOOP                
+                IF (NOT EXISTS(SELECT * FROM jogo WHERE equipe_casa_id = var_casa.id AND equipe_visitante_id = var_visitante.id AND campeonato_id = var_campeonato_id)) THEN                
+                    gols_casa  := CAST(RANDOM()*10 AS NUMERIC(1,0))::integer;
+                    gols_visitante := CAST(RANDOM()*10 AS NUMERIC(1,0))::integer;    
+                    INSERT INTO jogo (equipe_casa_id, equipe_visitante_id,  campeonato_id,  gols_da_casa, gols_do_visitante) 
+                    VALUES (var_casa.id, var_visitante.id, var_campeonato_id, gols_casa, gols_visitante);  
+                END IF;
+            END LOOP;        
+       END LOOP;       
+    ELSE
+        RETURN FALSE;
+    END IF;
+    RETURN TRUE;
+END;
 
+
+$$ LANGUAGE 'plpgsql';
+
+
+CREATE OR REPLACE FUNCTION gols_sofridos(var_equipe_id integer, var_campeonato_id integer) RETURNS integer AS
+$$
+DECLARE
+    gols_sofridos_enquanto_visitante integer := 0;
+    gols_sofridos_enquanto_casa integer := 0;
+BEGIN
+        select sum(gols_da_casa) from jogo where campeonato_id = var_campeonato_id and equipe_visitante_id = var_equipe_id INTO gols_sofridos_enquanto_visitante; 
+        
+        RAISE NOTICE 'Enquanto visitante: %', gols_sofridos_enquanto_visitante;
+        
+        select sum(gols_do_visitante) from jogo where campeonato_id = var_campeonato_id and equipe_casa_id = var_equipe_id INTO gols_sofridos_enquanto_casa;
+        
+        RAISE NOTICE 'Enquanto casa: %', gols_sofridos_enquanto_casa;
+        
+        RETURN gols_sofridos_enquanto_casa + gols_sofridos_enquanto_visitante;
+END;
+$$ LANGUAGE 'plpgsql';
+
+
+
+CREATE OR REPLACE FUNCTION gols_pro(var_equipe_id integer, var_campeonato_id integer) RETURNS integer AS
+$$
+DECLARE
+    gols_enquanto_casa integer := 0;
+    gols_enquanto_visitante integer := 0;
+
+
+BEGIN
+        select sum(gols_da_casa) from jogo where campeonato_id = var_campeonato_id and equipe_casa_id = var_equipe_id INTO gols_enquanto_casa; 
+        
+        select sum(gols_do_visitante) from jogo where campeonato_id = var_campeonato_id and equipe_visitante_id = var_equipe_id INTO gols_enquanto_visitante;
+        
+        RETURN gols_enquanto_casa + gols_enquanto_visitante;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION saldo_gols(var_equipe_id integer, var_campeonato_id integer) RETURNS integer AS
+$$
+BEGIN
+    return gols_pro(var_equipe_id, var_campeonato_id) - gols_sofridos(var_equipe_id, var_campeonato_id);
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE function pontuacao(var_equipe_id integer, var_campeonato_id integer) RETURNS integer AS
+$$
+DECLARE
+    var_pontos_vitoria_casa integer := 0;
+    var_pontos_vitoria_visitante integer := 0;
+    
+    var_pontos_empate integer := 0;
+BEGIN
+    SELECT COUNT(*)*3 FROM jogo WHERE equipe_casa_id = var_equipe_id AND campeonato_id = var_campeonato_id AND gols_da_casa > gols_do_visitante INTO var_pontos_vitoria_casa;
+    
+    SELECT COUNT(*)*3 FROM jogo WHERE equipe_visitante_id = var_equipe_id AND campeonato_id = var_campeonato_id AND gols_da_casa < gols_do_visitante INTO var_pontos_vitoria_visitante;
+    
+    
+      SELECT COUNT(*)*1 FROM jogo WHERE (equipe_visitante_id = var_equipe_id OR equipe_casa_id = var_equipe_id) AND campeonato_id = var_campeonato_id AND gols_da_casa = gols_do_visitante INTO var_pontos_empate;
+      
+      RETURN var_pontos_vitoria_casa + var_pontos_vitoria_visitante + var_pontos_empate;
+
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE function nro_vitorias(var_equipe_id integer, var_campeonato_id integer) RETURNS integer AS
+$$
+DECLARE
+    var_vitoria_casa integer := 0;
+    var_vitoria_visitante integer := 0;
+BEGIN
+    SELECT COUNT(*) FROM jogo WHERE equipe_casa_id = var_equipe_id AND campeonato_id = var_campeonato_id AND gols_da_casa > gols_do_visitante INTO var_vitoria_casa;
+    
+    SELECT COUNT(*) FROM jogo WHERE equipe_visitante_id = var_equipe_id AND campeonato_id = var_campeonato_id AND gols_da_casa < gols_do_visitante INTO var_vitoria_visitante;
+    
+      RETURN var_vitoria_casa + var_vitoria_visitante;
+
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE function nro_empates(var_equipe_id integer, var_campeonato_id integer) RETURNS integer AS
+$$
+DECLARE
+    
+    var_pontos_empate integer := 0;
+BEGIN
+    
+    
+      SELECT COUNT(*)*1 FROM jogo WHERE (equipe_visitante_id = var_equipe_id OR equipe_casa_id = var_equipe_id) AND campeonato_id = var_campeonato_id AND gols_da_casa = gols_do_visitante INTO var_pontos_empate;
+
+
+      RETURN var_pontos_empate;
+
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE function nro_derrotas(var_equipe_id integer, var_campeonato_id integer) RETURNS integer AS
+$$
+DECLARE
+    var_vitoria_casa integer := 0;
+    var_vitoria_visitante integer := 0;
+BEGIN
+    SELECT COUNT(*) FROM jogo WHERE equipe_casa_id = var_equipe_id AND campeonato_id = var_campeonato_id AND gols_da_casa < gols_do_visitante INTO var_vitoria_casa;
+    
+    SELECT COUNT(*) FROM jogo WHERE equipe_visitante_id = var_equipe_id AND campeonato_id = var_campeonato_id AND gols_da_casa > gols_do_visitante INTO var_vitoria_visitante;
+    
+      RETURN var_vitoria_casa + var_vitoria_visitante;
+
+END;
+$$ LANGUAGE 'plpgsql';
+
+
+CREATE OR REPLACE FUNCTION tabela(var_campeonato_id INTEGER) RETURNS TABLE (var_equipe_id integer, var_equipe_nome text, var_pontos integer, var_vitorias integer, var_empates integer, var_derrotas integer, var_gols_pro integer, var_gols_contra integer, var_saldo_gols integer) AS 
+$$
+DECLARE
+    var_equipe_aux RECORD;
+    var_equipe_id_aux integer;
+    var_equipe_nome_aux text;
+    
+    
+    var_pontos_aux integer;
+    var_vitorias_aux integer;
+    var_empates_aux integer;
+    var_derrotas_aux integer;
+    var_gols_pro_aux integer;
+    var_gols_contra_aux integer;
+    var_saldo_gols_aux integer;
+BEGIN   
+      FOR var_equipe_aux IN select * from equipe LOOP    
+          var_equipe_id_aux := var_equipe_aux.id;
+          var_equipe_nome_aux := var_equipe_aux.nome;
+      
+          var_pontos_aux := pontuacao(var_equipe_aux.id, var_campeonato_id);
+          var_vitorias_aux := nro_vitorias(var_equipe_aux.id, var_campeonato_id);
+          var_empates_aux :=  nro_empates(var_equipe_aux.id, var_campeonato_id);
+          var_derrotas_aux := nro_vitorias(var_equipe_aux.id, var_campeonato_id);
+          var_gols_pro_aux := gols_pro(var_equipe_aux.id, var_campeonato_id);
+          var_gols_contra_aux := gols_sofridos(var_equipe_aux.id, var_campeonato_id);
+          var_saldo_gols_aux := saldo_gols(var_equipe_aux.id, var_campeonato_id);
+          
+           CREATE TEMPORARY TABLE IF NOT EXISTS temp_tabela (var_equipe_id integer, var_equipe_nome text, var_pontos integer, var_vitorias integer, var_empates integer, var_derrotas integer, var_gols_pro integer, var_gols_contra integer, var_saldo_gols integer) ON COMMIT DROP;
+           
+           INSERT INTO temp_tabela(var_equipe_id, var_equipe_nome, var_pontos, var_vitorias, var_empates, var_derrotas, var_gols_pro, var_gols_contra, var_saldo_gols) VALUES (var_equipe_id_aux, var_equipe_nome_aux , var_pontos_aux,   var_vitorias_aux,  var_empates_aux, var_derrotas_aux,  var_gols_pro_aux, var_gols_contra_aux, var_saldo_gols_aux);
+           
+           
+      
+      
+      END LOOP;
+      
+      RETURN QUERY SELECT * FROM temp_tabela;
+END;
+$$ LANGUAGE 'plpgsql';
+
+-- SELECT * FROM tabela(2) order by var_pontos desc, var_vitorias desc, var_saldo_gols desc;
 
 
 
