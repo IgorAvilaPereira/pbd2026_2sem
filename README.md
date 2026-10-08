@@ -63,6 +63,7 @@
 <br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/09_terminar_lista_flask) <br><br>
 &nbsp;
 ## [./10_revisao_1bim](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./10_revisao_1bim) <br>
+[lista_revisao.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./10_revisao_1bim/lista_revisao.md) <br>
 <br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/10_revisao_1bim) <br><br>
 &nbsp;
 [revisao.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./10_revisao_1bim/revisao.md) <br>
