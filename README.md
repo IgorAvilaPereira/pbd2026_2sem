@@ -76,5 +76,6 @@
 
 <br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_1sem/tree/main/11_trigger) <br><br>
 &nbsp;
+[trabalho2.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./12_trigger/trabalho2.md) <br>
 [trigger.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./12_trigger/trigger.pdf) <br>
 [triggers_printscreen.pdf](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./12_trigger/triggers_printscreen.pdf) <br>
