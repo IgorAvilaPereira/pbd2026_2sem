@@ -1,2 +1,10 @@
+**Aula de Hoje:**
+
+* Apresentar cronograma
+
+* Apresentar Trabalho 2
+
+* Exercícios
+
 <br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/13_exercicios_trigger) <br><br>
 &nbsp;
