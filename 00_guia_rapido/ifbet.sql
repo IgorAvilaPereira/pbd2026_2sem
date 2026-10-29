@@ -4,6 +4,11 @@ CREATE DATABASE ifbet;
 
 \c ifbet;
 
+CREATE TABLE log (
+    id serial primary key,
+    comentario text not null
+);
+
 CREATE TABLE usuario (
     id serial primary key,
     nome character varying(200) not null,
@@ -64,6 +69,7 @@ INSERT INTO aposta (usuario_id, valor, jogo_id, gols_da_casa, gols_do_visitante,
 (2, 100, 1, 10, 0, 0.5);
 
 UPDATE usuario SET saldo = CAST((saldo::numeric - 100::numeric) as money) WHERE id = 2;
+
 
 
 --DROP FUNCTION propor_aposta;
@@ -432,6 +438,33 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION validar_aposta() RETURNS TRIGGER AS
+$$
+BEGIN
+    IF NEW.valor IS NULL OR NEW.valor::numeric(10,2) <= 0 THEN
+        RAISE NOTICE 'DEU RUIM, APOSTA NEGATIVA NÃO ROLA! %', TG_OP;
+        RETURN NULL;
+    END IF;
+    RAISE NOTICE 'AGORA SIM - APOSTA %', TG_OP;
+    RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_validar_aposta BEFORE INSERT OR UPDATE ON aposta FOR EACH ROW EXECUTE FUNCTION validar_aposta();
+
+CREATE OR REPLACE FUNCTION registrar_log() RETURNS TRIGGER AS
+$$
+BEGIN
+    INSERT INTO log (comentario) VALUES (TG_TABLE_NAME||':'||TG_OP);
+    IF (TG_OP = 'UPDATE' OR TG_OP = 'INSERT') THEN
+        RETURN NEW;
+    END IF;
+    RETURN OLD;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_realizar_log_aposta AFTER INSERT OR UPDATE OR DELETE ON aposta FOR EACH ROW EXECUTE FUNCTION registrar_log();
+
 CREATE OR REPLACE FUNCTION realizar_aposta(var_usuario_id integer, var_jogo_id integer, var_valor money, var_gols_casa integer, var_gols_visitante integer) RETURNS BOOLEAN AS
 $$
 BEGIN
@@ -782,5 +815,55 @@ $$ LANGUAGE 'plpgsql';
 
 -- SELECT * FROM tabela(2) order by var_pontos desc, var_vitorias desc, var_saldo_gols desc;
 
+CREATE OR REPLACE FUNCTION validar_saldo_aposta() RETURNS TRIGGER
+AS 
+$$
+DECLARE 
+    var_saldo money := 0;
+BEGIN
+    SELECT saldo FROM usuario WHERE id = NEW.usuario_id INTO var_saldo; 
+    IF (NEW.valor::numeric > var_saldo::numeric) THEN
+        RAISE EXCEPTION 'DEU xabum! saldo insuficiente';
+        RETURN NULL;
+    END IF;
+    UPDATE usuario SET saldo = cast((saldo::numeric - NEW.valor::numeric) as money) where id = NEW.usuario_id;
+    RETURN NEW;    
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trg_validar_saldo_aposta BEFORE INSERT OR UPDATE
+ON aposta FOR EACH ROW EXECUTE FUNCTION validar_saldo_aposta();
+
+CREATE OR REPLACE FUNCTION impedir_apostas() RETURNS TRIGGER AS
+$$
+BEGIN   
+    IF (EXISTS(SELECT * FROM jogo WHERE id = NEW.jogo_id AND data_hora < CURRENT_TIMESTAMP)) THEN
+        RAISE EXCEPTION 'Deu xabum! Apostas acabaram!';
+        RETURN NULL;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trg_impedir_apostas BEFORE INSERT OR UPDATE
+ON aposta FOR EACH ROW EXECUTE FUNCTION impedir_apostas();
 
 
+
+CREATE OR REPLACE FUNCTION verifica_gols() RETURNS TRIGGER AS
+$$
+BEGIN   
+   IF ((NEW.gols_da_casa >= 0 OR NEW.gols_da_casa IS NULL) AND (NEW.gols_do_visitante >= 0 OR NEW.gols_do_visitante IS NULL)) THEN
+        RETURN NEW;
+   END IF;
+   RAISE EXCEPTION 'Deu xabum! favor setar gols >= 0 ou NULO';
+   RETURN NULL;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trg_verifica_gols BEFORE INSERT OR UPDATE
+ON aposta FOR EACH ROW EXECUTE FUNCTION verifica_gols();
+
+
+CREATE TRIGGER trg_verifica_gols BEFORE INSERT OR UPDATE
+ON jogo FOR EACH ROW EXECUTE FUNCTION verifica_gols();
