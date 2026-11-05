@@ -11,7 +11,6 @@ Abaixo estão sugestões de triggers organizadas por finalidade, priorizando reg
 | 2  | `aposta` — `BEFORE INSERT`               | Impedir apostas com saldo insuficiente, mesmo se inseridas diretamente por SQL. |
 | 3  | `aposta` — `BEFORE INSERT`               | Impedir apostas em jogos que já começaram.                                      |
 | 4  | `aposta` — `BEFORE INSERT`               | Validar se os gols previstos são valores não negativos.                         |
-| 5  | `aposta` — `BEFORE INSERT`               | Impedir mais de uma aposta do mesmo usuário para o mesmo jogo.                  |
 | 6  | `aposta` — `AFTER INSERT`                | Descontar automaticamente o valor da aposta do saldo do usuário.                |
 | 7  | `aposta` — `AFTER DELETE`                | Devolver o valor da aposta ao usuário quando ela for cancelada.                 |
 | 8  | `aposta` — `BEFORE UPDATE`               | Impedir alterações indevidas em apostas já registradas.                         |
