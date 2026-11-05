@@ -49,6 +49,8 @@ CREATE TABLE jogo (
     gols_do_visitante integer,
     campeonato_id integer references campeonato (id)
 );
+ALTER TABLE jogo ADD COLUMN data_hora_fim TIMESTAMP;
+
 INSERT INTO jogo (equipe_casa_id, equipe_visitante_id) VALUES
 (1, 6);
 
@@ -481,6 +483,46 @@ BEGIN
     RETURN FALSE;
 END;
 $$ LANGUAGE 'plpgsql';
+
+-- 6 da lista de trigger
+CREATE OR REPLACE FUNCTION trg_aposta() RETURNS TRIGGER AS 
+$$
+BEGIN
+        IF (EXISTS(SELECT * FROM usuario WHERE id = NEW.usuario_id AND saldo::numeric >= NEW.valor::numeric)) THEN    
+
+-- saldo ja eh descontado em outra trigger    
+--         UPDATE usuario SET saldo = cast((saldo::numeric - NEW.valor::numeric) as money) where id = NEW.usuario_id;
+        
+        RETURN NEW;
+    END IF;
+    
+    RETURN NULL;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_aposta BEFORE INSERT OR UPDATE ON aposta FOR EACH ROW EXECUTE FUNCTION trg_aposta();
+
+-- 7
+/*
+Jogo não começou -> devolve 100%
+jogo começou -> devolve 80%
+jogo terminou -> não devolve nada -> n precisa fazer nada
+*/
+CREATE OR REPLACE FUNCTION trigger_cancela_aposta() RETURNS TRIGGER AS 
+$$
+BEGIN
+    IF (EXISTS(SELECT * FROM jogo WHERE id = OLD.jogo_id AND data_hora <= CURRENT_TIMESTAMP AND data_hora_fim is null)) THEN
+         UPDATE usuario SET saldo = cast((saldo::numeric + OLD.valor::numeric*0.8) as money) where id = OLD.usuario_id;    
+    ELSIF (EXISTS(SELECT * FROM jogo WHERE id = OLD.jogo_id AND data_hora >= CURRENT_TIMESTAMP)) THEN
+            UPDATE usuario SET saldo = cast((saldo::numeric + OLD.valor::numeric) as money) where id = OLD.usuario_id; 
+          
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+
+
+    CREATE OR REPLACE TRIGGER trg_cancela_aposta AFTER DELETE ON aposta FOR EACH ROW EXECUTE FUNCTION trigger_cancela_aposta();
 
 -- 26
 CREATE OR REPLACE PROCEDURE cancelar_aposta(var_id integer) AS
