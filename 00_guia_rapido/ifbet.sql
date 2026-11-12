@@ -39,7 +39,7 @@ CREATE TABLE campeonato (
     nome text not null,
     ano integer check (ano >= 1900)
 );
-
+;
 CREATE TABLE jogo (
     id serial primary key,
     data_hora timestamp default current_timestamp,
@@ -51,8 +51,90 @@ CREATE TABLE jogo (
 );
 ALTER TABLE jogo ADD COLUMN data_hora_fim TIMESTAMP;
 
+-- 9
+CREATE OR REPLACE FUNCTION impede_jogo() RETURNS TRIGGER AS
+$$
+BEGIN
+    IF (EXISTS(SELECT * FROM equipe WHERE id = NEW.equipe_casa_id) AND EXISTS(SELECT * FROM equipe WHERE id = NEW.equipe_visitante_id)) THEN
+        IF (NEW.equipe_casa_id != NEW.equipe_visitante_id) THEN
+            RETURN NEW;
+        END IF;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_impede_jogo BEFORE INSERT OR UPDATE ON jogo FOR EACH ROW EXECUTE FUNCTION impede_jogo();
+
+-- 10: impedir gols negativos
+CREATE OR REPLACE FUNCTION impede_gols_negativos() RETURNS TRIGGER AS
+$$
+BEGIN    
+    IF ((NEW.gols_da_casa >= 0 AND NEW.gols_do_visitante >= 0) OR (NEW.gols_da_casa IS NULL AND NEW.gols_do_visitante IS NULL)) THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;    
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_impede_gols_negativos BEFORE INSERT OR UPDATE ON jogo FOR EACH ROW EXECUTE FUNCTION impede_gols_negativos();
+
+-- 11: Impedir a alteração do resultado de um jogo já encerrado.
+CREATE OR REPLACE FUNCTION impedir_alterar_jogo_encerrado() RETURNS TRIGGER AS 
+$$
+BEGIN
+    IF (NEW.data_hora_fim IS NOT NULL) THEN
+        IF (NEW.gols_da_casa != OLD.gols_da_casa OR NEW.gols_do_visitante != OLD.gols_do_visitante) THEN
+            RETURN NULL;
+        END IF;
+    END IF;
+    RETURN NEW;    
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_impedir_alterar_jogo_encerrado BEFORE UPDATE ON jogo FOR EACH ROW EXECUTE FUNCTION impedir_alterar_jogo_encerrado();
+
+-- 12: usuario — BEFORE UPDATE	Impedir que o saldo fique negativo.
+--CREATE OR REPLACE FUNCTION impedir_saldo_negativo() RETURNS TRIGGER AS
+--$$
+--BEGIN
+--    IF (NEW.saldo::NUMERIC < 0) THEN
+--        RETURN NULL;
+--    END IF;
+--    RETURN NEW;
+--END;
+--$$ LANGUAGE 'plpgsql';
+--
+--CREATE TRIGGER trigger_impedir_saldo_negativo BEFORE INSERT OR UPDATE ON usuario FOR EACH ROW EXECUTE FUNCTION impedir_saldo_negativo();
+
+CREATE OR REPLACE FUNCTION email_para_minusculo() RETURNS TRIGGER AS
+$$
+BEGIN
+    IF (NEW.email IS NOT NULL) THEN
+        NEW.email = LOWER(NEW.email);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_email_para_minusculo BEFORE INSERT OR UPDATE ON usuario FOR EACH ROW EXECUTE FUNCTION email_para_minusculo();
+
+-- 15: jogo — BEFORE INSERT OR UPDATE	Impedir datas de jogos anteriores à data atual, se essa for a regra adotada.
+CREATE OR REPLACE FUNCTION impedir_datas() RETURNS TRIGGER AS
+$$
+BEGIN
+    IF (NEW.data_hora >= CURRENT_TIMESTAMP) THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_impedir_datas BEFORE INSERT OR UPDATE ON jogo FOR EACH ROW EXECUTE FUNCTION impedir_datas();
+
 INSERT INTO jogo (equipe_casa_id, equipe_visitante_id) VALUES
 (1, 6);
+
 
 INSERT INTO jogo (equipe_casa_id, equipe_visitante_id) VALUES
 (6, 1);
