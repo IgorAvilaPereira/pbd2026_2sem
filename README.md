@@ -90,3 +90,9 @@
 
 <br><br>[Baixar todo o material da aula](https://download-directory.github.io/?url=http://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/13_exercicios_trigger) <br><br>
 &nbsp;
+## [./14_revisao_atendimento](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./14_revisao_atendimento) <br>
+**Revisão + Atendimento**
+## [./15_apresentacao_envio_trabalho2](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./15_apresentacao_envio_trabalho2) <br>
+**Apresentação e Entrega Trabalho 2**
+## [./16_atividade2](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./16_atividade2) <br>
+**Atividade 2**
