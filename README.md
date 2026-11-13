@@ -92,6 +92,7 @@
 &nbsp;
 ## [./14_revisao_atendimento](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./14_revisao_atendimento) <br>
 **Revisão + Atendimento**
+[revisao2.md](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./14_revisao_atendimento/revisao2.md) <br>
 ## [./15_apresentacao_envio_trabalho2](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./15_apresentacao_envio_trabalho2) <br>
 **Apresentação e Entrega Trabalho 2**
 ## [./16_atividade2](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./16_atividade2) <br>
