@@ -218,13 +218,9 @@ Podemos utilizar tabelas de transição (`REFERENCING OLD TABLE` e `NEW TABLE`) 
 
 Considere 50 registros atualizados por um único comando SQL:
 
-# **50**
-
 **FOR EACH ROW**
 
 50 execuções
-
-# **1**
 
 **FOR EACH STATEMENT**
 
