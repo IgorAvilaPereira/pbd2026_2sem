@@ -99,3 +99,4 @@
 **Apresentação e Entrega Trabalho 2**
 ## [./16_atividade2](https://github.com/IgorAvilaPereira/pbd2026_2sem/tree/main/./16_atividade2) <br>
 **Atividade 2**
+[sistema_academico.sql](https://github.com/IgorAvilaPereira/pbd2026_2sem/blob/main/./16_atividade2/sistema_academico.sql) <br>
